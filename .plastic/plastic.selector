@@ -1,0 +1,4 @@
+repository "VirtualFriend/VirtualFriend@5773995771467@cloud"
+  path "/"
+    br "/main"
+    co "/main"
