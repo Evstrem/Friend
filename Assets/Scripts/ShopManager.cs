@@ -1,11 +1,13 @@
 using UnityEngine;
-using UnityEngine;
+using TMPro;
 
 public class ShopManager : MonoBehaviour
 {
     public GameObject shopPanel;
     public PetActions petActions;
     public PetStats petStats;
+
+    public TMP_Text shopMessageText;
 
     public int foodPrice = 5;
     public int toyPrice = 7;
@@ -14,6 +16,7 @@ public class ShopManager : MonoBehaviour
     public void OpenShop()
     {
         shopPanel.SetActive(true);
+        shopMessageText.text = "";
     }
 
     public void CloseShop()
@@ -27,6 +30,11 @@ public class ShopManager : MonoBehaviour
         {
             petActions.coins -= foodPrice;
             petStats.AddHunger(20f);
+            shopMessageText.text = "Еда куплена";
+        }
+        else
+        {
+            shopMessageText.text = "Недостаточно монет";
         }
     }
 
@@ -36,6 +44,11 @@ public class ShopManager : MonoBehaviour
         {
             petActions.coins -= toyPrice;
             petStats.AddHappiness(20f);
+            shopMessageText.text = "Игрушка куплена";
+        }
+        else
+        {
+            shopMessageText.text = "Недостаточно монет";
         }
     }
 
@@ -45,6 +58,11 @@ public class ShopManager : MonoBehaviour
         {
             petActions.coins -= bedPrice;
             petStats.AddEnergy(20f);
+            shopMessageText.text = "Подушка куплена";
+        }
+        else
+        {
+            shopMessageText.text = "Недостаточно монет";
         }
     }
 }

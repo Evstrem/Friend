@@ -4,6 +4,7 @@ public class CameraFollow : MonoBehaviour
 {
     [Header("Target")]
     public Transform target;
+    public Transform lookTarget;
     public Vector3 targetOffset = new Vector3(0f, 1.5f, 0f);
 
     [Header("Rotation")]
@@ -72,7 +73,8 @@ public class CameraFollow : MonoBehaviour
 
     void HandleCameraPosition()
     {
-        Vector3 targetPosition = target.position + targetOffset;
+        Vector3 followPoint = target.position + targetOffset;
+        Vector3 lookPoint = lookTarget != null ? lookTarget.position : followPoint;
 
         Quaternion rotation = Quaternion.Euler(pitch, yaw, 0f);
         Vector3 desiredDirection = rotation * new Vector3(0f, 0f, -distance);
@@ -81,7 +83,7 @@ public class CameraFollow : MonoBehaviour
 
         RaycastHit hit;
         if (Physics.SphereCast(
-            targetPosition,
+            followPoint,
             collisionRadius,
             desiredDirection.normalized,
             out hit,
@@ -94,11 +96,11 @@ public class CameraFollow : MonoBehaviour
 
         currentDistance = Mathf.Lerp(currentDistance, adjustedDistance, followSmoothSpeed * Time.deltaTime);
 
-        Vector3 desiredPosition = targetPosition + rotation * new Vector3(0f, 0f, -currentDistance);
+        Vector3 desiredPosition = followPoint + rotation * new Vector3(0f, 0f, -currentDistance);
 
         transform.position = Vector3.Lerp(transform.position, desiredPosition, followSmoothSpeed * Time.deltaTime);
 
-        Quaternion lookRotation = Quaternion.LookRotation(targetPosition - transform.position);
+        Quaternion lookRotation = Quaternion.LookRotation(lookPoint - transform.position);
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, rotationSmoothSpeed * Time.deltaTime);
     }
 }

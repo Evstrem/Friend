@@ -7,12 +7,13 @@ public class PetWander : MonoBehaviour
     public PetStats petStats;
 
     [Header("Movement")]
-    public float moveSpeed = 2f;
-    public float rotationSpeed = 5f;
+    public float moveSpeed = 1.2f;
+    public float rotationSpeed = 3f;
+    public float stopDistance = 0.2f;
 
     [Header("Waiting")]
-    public float minWaitTime = 2f;
-    public float maxWaitTime = 4f;
+    public float minWaitTime = 2.5f;
+    public float maxWaitTime = 5f;
 
     [Header("Room Bounds")]
     public float moveRangeX = 4f;
@@ -30,7 +31,7 @@ public class PetWander : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        targetPosition = transform.position;
+        targetPosition = rb.position;
         SetNewWaitTime();
     }
 
@@ -67,15 +68,17 @@ public class PetWander : MonoBehaviour
         float randomX = Random.Range(minX, maxX);
         float randomZ = Random.Range(minZ, maxZ);
 
-        targetPosition = new Vector3(randomX, transform.position.y, randomZ);
+        targetPosition = new Vector3(randomX, rb.position.y, randomZ);
     }
 
     void MoveToTarget()
     {
-        Vector3 direction = targetPosition - transform.position;
+        Vector3 direction = targetPosition - rb.position;
         direction.y = 0f;
 
-        if (direction.magnitude < 0.15f)
+        float distanceToTarget = direction.magnitude;
+
+        if (distanceToTarget <= stopDistance)
         {
             isWaiting = true;
             SetNewWaitTime();
@@ -83,7 +86,9 @@ public class PetWander : MonoBehaviour
         }
 
         Vector3 moveDirection = direction.normalized;
-        Vector3 nextPosition = rb.position + moveDirection * moveSpeed * Time.fixedDeltaTime;
+
+        float speedFactor = Mathf.Clamp01(distanceToTarget);
+        Vector3 nextPosition = rb.position + moveDirection * moveSpeed * speedFactor * Time.fixedDeltaTime;
 
         Vector3 center = roomCenter.position;
         float minX = center.x - moveRangeX + wallPadding;
