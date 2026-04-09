@@ -1,2 +1,19 @@
 fileFormatVersion: 2
 guid: 3695b696ce8b0574a955a116d39dacdb
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - shopPanel: {instanceID: 0}
+  - petActions: {instanceID: 0}
+  - petStats: {instanceID: 0}
+  - shopMessageText: {instanceID: 0}
+  - foodPrefab: {instanceID: 0}
+  - foodSpawnPoint: {instanceID: 0}
+  - toyPrefab: {instanceID: 0}
+  - toySpawnPoint: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
